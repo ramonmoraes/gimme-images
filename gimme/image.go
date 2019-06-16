@@ -3,7 +3,6 @@ package gimme
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"regexp"
@@ -40,7 +39,7 @@ func (i *Image) Save() error {
 		i.createName()
 	}
 
-	imgPath := fmt.Sprintf("%s%s.jpeg", BASE_PATH, i.Name)
+	imgPath := fmt.Sprintf("%s%s", BASE_PATH, i.Name)
 	fmt.Printf("Saving at: %s\n", imgPath)
 	out, err := os.Create(imgPath)
 	if err != nil {
@@ -53,10 +52,13 @@ func (i *Image) Save() error {
 }
 
 func (i *Image) createName() {
-	regex, err := regexp.Compile(".*\\/(.*)")
-	if err != nil {
-		log.Fatal(err)
-	}
+	regex := regexp.MustCompile(".*\\/(.*)")
 	matches := regex.FindAllStringSubmatch(i.URL, -1)
-	i.Name = matches[0][len(matches[0])-1]
+	name := matches[0][len(matches[0])-1]
+
+	regex = regexp.MustCompile(".*\\.(png|jpeg|jpg)")
+	if len(regex.FindString(name)) == 0 {
+		name = fmt.Sprintf("%s.png", name)
+	}
+	i.Name = name
 }
