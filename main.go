@@ -22,7 +22,7 @@ func main() {
 
 func example() {
 	url := "https://i2.wp.com/ocapacitor.com/wp-content/uploads/2016/08/0000jgpfymtl.jpg?fit=655%2C370&ssl=1&resize=350%2C200"
-	filepath := "./img.jpg"
+	filepath := ".dart/img.jpg"
 	err := downloadImag(filepath, url)
 	if err != nil {
 		log.Fatal(err)
