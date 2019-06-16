@@ -1,4 +1,4 @@
-package main
+package gimme
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-func getBodyFromURL(URL string) []byte {
+func GetBodyFromURL(URL string) []byte {
 	resp, err := http.Get(URL)
 	if err != nil {
 		log.Fatal(err)
@@ -24,7 +24,7 @@ func getBodyFromURL(URL string) []byte {
 	return body
 }
 
-func getDocument(body []byte) *goquery.Document {
+func GetDocument(body []byte) *goquery.Document {
 	reader := bytes.NewReader(body)
 	doc, err := goquery.NewDocumentFromReader(reader)
 	if err != nil {
@@ -34,7 +34,7 @@ func getDocument(body []byte) *goquery.Document {
 	return doc
 }
 
-func getImagesSRC(doc *goquery.Document) []string {
+func GetImagesSRC(doc *goquery.Document) []string {
 	urls := []string{}
 	doc.Find("img").Each(func(i int, sel *goquery.Selection) {
 		urls = append(urls, sel.AttrOr("src", ""))
