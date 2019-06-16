@@ -23,13 +23,13 @@ func main() {
 func example() {
 	url := "https://i2.wp.com/ocapacitor.com/wp-content/uploads/2016/08/0000jgpfymtl.jpg?fit=655%2C370&ssl=1&resize=350%2C200"
 	filepath := ".dart/img.jpg"
-	err := downloadImag(filepath, url)
+	err := downloadImage(filepath, url)
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func downloadImag(filepath string, url string) error {
+func downloadImage(filepath string, url string) error {
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
