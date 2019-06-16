@@ -2,12 +2,19 @@ package gimme
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/PuerkitoBio/goquery"
 )
+
+type Crawler struct {
+	URL    string
+	Domain string
+}
 
 func DownloadURLS(urls []string) []error {
 	errors := []error{}
@@ -22,10 +29,17 @@ func DownloadURLS(urls []string) []error {
 	return errors
 }
 
-func CrawlURL(URL string) []string {
+func (c *Crawler) CrawlURL(URL string) []string {
 	body := GetBodyFromURL(URL)
 	doc := GetDocument(body)
-	return GetImagesSRC(doc)
+	srcs := GetImagesSRC(doc)
+
+	for i, src := range srcs {
+		if strings.HasPrefix(src, "/") {
+			srcs[i] = fmt.Sprintf("%s%s", c.Domain, src)
+		}
+	}
+	return srcs
 }
 
 func GetBodyFromURL(URL string) []byte {
