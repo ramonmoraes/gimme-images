@@ -6,6 +6,8 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+
+	"github.com/gosimple/slug"
 )
 
 const BASE_PATH = "data/"
@@ -55,6 +57,7 @@ func (i *Image) createName() {
 	regex := regexp.MustCompile(".*\\/(.*)")
 	matches := regex.FindAllStringSubmatch(i.URL, -1)
 	name := matches[0][len(matches[0])-1]
+	name = slug.Make(name)
 
 	regex = regexp.MustCompile(".*\\.(png|jpeg|jpg)")
 	if len(regex.FindString(name)) == 0 {
