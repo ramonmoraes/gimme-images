@@ -9,6 +9,25 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
+func DownloadURLS(urls []string) []error {
+	errors := []error{}
+	for _, url := range urls {
+		img := Image{URL: url}
+		err := img.Download()
+		if err != nil {
+			errors = append(errors, err)
+		}
+		err = img.Save()
+	}
+	return errors
+}
+
+func CrawlURL(URL string) []string {
+	body := GetBodyFromURL(URL)
+	doc := GetDocument(body)
+	return GetImagesSRC(doc)
+}
+
 func GetBodyFromURL(URL string) []byte {
 	resp, err := http.Get(URL)
 	if err != nil {
